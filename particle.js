@@ -14,13 +14,11 @@ class Magnet {
   }
 
   calculateMagneticForce(other) {
-    // 두 공 사이의 거리 벡터 계산
     let force = p5.Vector.sub(other.position, this.position);
     let distance = force.mag();
     distance = constrain(distance, 5, 50); // 너무 가까운 거리는 제한
     force.normalize();
 
-    // 거리의 제곱에 반비례하는 힘 계산
     let strength = (this.polarity * other.polarity * 10) / (distance * distance);
     force.mult(strength);
 
@@ -31,6 +29,25 @@ class Magnet {
     this.velocity.add(this.acceleration);
     this.position.add(this.velocity);
     this.acceleration.mult(0);
+  }
+
+  checkEdges() {
+    // 화면의 가장자리에 닿으면 속도를 반전시켜 공이 벗어나지 않게 함
+    if (this.position.x > width - this.radius) {
+      this.position.x = width - this.radius;
+      this.velocity.x *= -1;
+    } else if (this.position.x < this.radius) {
+      this.position.x = this.radius;
+      this.velocity.x *= -1;
+    }
+
+    if (this.position.y > height - this.radius) {
+      this.position.y = height - this.radius;
+      this.velocity.y *= -1;
+    } else if (this.position.y < this.radius) {
+      this.position.y = this.radius;
+      this.velocity.y *= -1;
+    }
   }
 
   display() {
