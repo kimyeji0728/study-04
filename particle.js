@@ -25,6 +25,24 @@ class Magnet {
     return force;
   }
 
+  // 두 공이 가까워지지 않도록 밀어내는 반발력 계산
+  calculateRepulsionForce(other) {
+    let force = p5.Vector.sub(this.position, other.position);
+    let distance = force.mag();
+    
+    // 일정 거리 이내로 가까워지면 반발력 발생
+    let minDistance = this.radius * 2; // 두 공의 반지름을 합친 거리 이상으로 유지
+    if (distance < minDistance) {
+      force.normalize();
+      let strength = (minDistance - distance) * 0.1; // 반발력의 크기
+      force.mult(strength); // 반발력 적용
+    } else {
+      force.set(0, 0); // 가까워지지 않으면 반발력이 0
+    }
+
+    return force;
+  }
+
   update() {
     this.velocity.add(this.acceleration);
     this.position.add(this.velocity);
@@ -32,7 +50,6 @@ class Magnet {
   }
 
   checkEdges() {
-    // 화면의 가장자리에 닿으면 속도를 반전시켜 공이 벗어나지 않게 함
     if (this.position.x > width - this.radius) {
       this.position.x = width - this.radius;
       this.velocity.x *= -1;
@@ -52,7 +69,7 @@ class Magnet {
 
   display() {
     stroke(0);
-    fill(this.polarity > 0 ? 'blue' : 'red'); // 자성에 따라 색상 구분
+    fill(this.polarity > 0 ? 'blue' : 'red');
     ellipse(this.position.x, this.position.y, this.radius * 2, this.radius * 2);
   }
 }

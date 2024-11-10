@@ -9,10 +9,17 @@ function setup() {
 function draw() {
   background(255);
 
-  let force = magnetA.calculateMagneticForce(magnetB);
-  magnetA.applyForce(force);
-  magnetB.applyForce(force.mult(-1));
+  // 자력 계산 및 적용
+  let magneticForce = magnetA.calculateMagneticForce(magnetB);
+  magnetA.applyForce(magneticForce);
+  magnetB.applyForce(magneticForce.mult(-1));
 
+  // 반발력 계산 및 적용
+  let repulsionForce = magnetA.calculateRepulsionForce(magnetB);
+  magnetA.applyForce(repulsionForce);
+  magnetB.applyForce(repulsionForce.mult(-1));
+
+  // 각 공의 위치와 속도 업데이트
   magnetA.update();
   magnetB.update();
 
@@ -20,6 +27,7 @@ function draw() {
   magnetA.checkEdges();
   magnetB.checkEdges();
 
+  // 공 그리기
   magnetA.display();
   magnetB.display();
 }
