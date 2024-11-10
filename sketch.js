@@ -2,8 +2,8 @@ let magnetA, magnetB;
 
 function setup() {
   createCanvas(640, 480);
-  magnetA = new Magnet(width / 3, height / 2, 1);
-  magnetB = new Magnet((2 * width) / 3, height / 2, 1);
+  magnetA = new Magnet(width / 3, height / 2, 1);     // 양성 공 (파란색)
+  magnetB = new Magnet((2 * width) / 3, height / 2, -1); // 음성 공 (빨간색)
 }
 
 function draw() {
